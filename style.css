@@ -1,0 +1,23 @@
+body {
+  margin: 0;
+  font: 9.3333333333px "Fira Sans", sans-serif;
+}
+h1 {
+  font-size: 2.5rem;
+  font-weight: 300;
+  margin: 1.5em 0.5rem 1em;
+  text-align: center;
+  color: #fefefe;
+}
+#particles-js {
+  /* position: absolute; */
+  width: 100%;
+  height: 100%;
+  background: #00356b;
+}
+.heading {
+  position: absolute;
+  text-align: center;
+  top: 30%;
+  width: 100%;
+}
