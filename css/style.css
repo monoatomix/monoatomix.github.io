@@ -1,23 +1,37 @@
 body {
   margin: 0;
-  font: 9.3333333333px "Fira Sans", sans-serif;
+  overflow: hidden;
 }
 h1 {
   font-size: 2.5rem;
   font-weight: 300;
-  margin: 1.5em 0.5rem 1em;
+  margin: 1.5em 0.5rem -0.25em;
   text-align: center;
   color: #fefefe;
 }
+h2 {
+  color: #fefefe;
+}
+#home-button{
+  position: relative;
+  text-align: center;
+  vertical-align: middle;
+  top: 25%;
+}
 #particles-js {
-  /* position: absolute; */
+  position: absolute;
   width: 100%;
-  height: 100%;
-  background: #00356b;
+  height: 100vh;
+  background: #202023;
 }
 .heading {
   position: absolute;
   text-align: center;
   top: 30%;
   width: 100%;
+}
+.text{
+  position: flex;
+  font-size: 1rem;
+  color: #fefefe;
 }
