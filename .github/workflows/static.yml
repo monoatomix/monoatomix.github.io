@@ -2,9 +2,6 @@
 name: Deploy static content to Pages
 
 on:
-  push:
-    branches:
-      - .*
   pull_request:
     branches:
       - main
