@@ -10,11 +10,13 @@ h1 {
   margin: -0.10em 0.5rem -0.25em;
 }
 footer {
-  display: flex;
+  font-size: 1.5rem;
+  display: table;
   position: absolute;
   margin-left: auto;
   margin-right: auto;
   align-items: center;
+  text-align: center;
   justify-content: center;
   left: 0;
   right: 0;
