@@ -63,22 +63,36 @@ footer {
   position: absolute;
   margin-top: 10%;
 }
-.typing{
+.nav{
   display: flex;
   position: absolute;
-  margin-top: auto;
-  margin-left: auto;
   left: 0;
   right: 0;
+  margin-left: auto;
+  margin-top: auto;
+  justify-content: space-around;
+  bottom: 70vh;
+}
+.active{
+  font-weight: bold;
+  text-decoration: underline;
+}
+.typing{
+  /* display: flex; */
+  position: absolute;
+  /* margin-top: auto; */
+  /* margin-left: auto; */
+  /* left: 0; */
+  /* right: 0; */
   /* width: 0; */
-  justify-content: center;
-  align-items: center;
-  bottom: 50vh;
+  /* justify-content: center; */
+  /* align-items: center; */
+  /* bottom: 50vh; */
 }
 .typing-demo {
   text-align: center;
   width: 0;
-  animation: typing 1.32s steps(24, end) /*forwards - to sustain text*/;
+  animation: typing 1.32s steps(24, end) forwards;
   white-space: nowrap;
   overflow: hidden;
   font-family: monospace;
