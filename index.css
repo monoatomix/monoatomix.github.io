@@ -58,7 +58,7 @@ body {
     overflow-x: hidden;
 }
 
-@media screen and (max-width: 480px) {
+@media screen and (max-width: 720px) {
     :root {
         font-size: 14px;
     }
@@ -514,4 +514,10 @@ label input {
 
 .debug-toggle-label {
     text-align: right;
+}
+
+@media screen and (max-width: 720px) {
+    button {
+        height: auto;
+    }
 }

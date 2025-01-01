@@ -118,3 +118,14 @@ function onDebugToggle() {
 }
 debugToggle.addEventListener("change", onDebugToggle);
 onDebugToggle();
+
+const justifyToggle = document.querySelector(".justify-toggle");
+function onJustifyToggle() {
+  document.body.classList.toggle("justify", justifyToggle.checked);
+  const paragraphs = document.querySelectorAll("p");
+  for (const paragraph of paragraphs) {
+    paragraph.style.setProperty("text-align", justifyToggle.checked ? "justify" : "left");
+  }
+}
+justifyToggle.addEventListener("change", onJustifyToggle);
+onJustifyToggle();
