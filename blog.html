@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+  <meta charset="utf-8" />
+  <link rel="stylesheet" href="index.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="preload" fetchpriority="high" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="Aniket Yadav" />
+  <meta name="title" content="Blog - Aniket Yadav" />
+  <meta name="description" content="Blog posts and articles by Aniket Yadav on data engineering, AI, and technology." />
+  <meta name="keywords" content="blog, data engineering, AI, python, technology, programming" />
+  <meta name="robots" content="index, follow" />
+  <title>Blog - Aniket Yadav</title>
+</head>
+<body>
+<table class="header">
+  <tr>
+    <td colspan="2" rowspan="2" class="width-auto">
+      <h1 class="title"><a href="index.html" style="text-decoration:none">Aniket Yadav</a></h1>
+      <span class="subtitle">Blog & Articles</span>
+    </td>
+    <th>Home</th>
+    <td class="width-min"><a href="index.html">← Back to Main</a></td>
+  </tr>
+  <tr>
+    <th>Updated</th>
+    <td class="width-min"><time id="last-updated" style="white-space: pre;">Loading...</time></td>
+  </tr>
+</table>
+
+<nav>
+  <h2>Blog Navigation</h2>
+  <div class="grid">
+    <button onclick="showAllPosts();" style="flex-grow: 1;">All Posts</button>
+    <button onclick="filterByTag('data-engineering');" style="flex-grow: 1;">Data Engineering</button>
+    <button onclick="filterByTag('ai');" style="flex-grow: 1;">AI & ML</button>
+    <button onclick="filterByTag('python');" style="flex-grow: 1;">Python</button>
+  </div>
+</nav>
+
+<h2 id="blog-posts">Blog Posts</h2>
+<div id="posts-container">
+  <!-- Blog posts will be dynamically loaded here -->
+  <p>Loading blog posts...</p>
+</div>
+
+<h2 id="archives">Archives</h2>
+<div id="archives-container">
+  <!-- Archives will be generated here -->
+</div>
+
+<script>
+// Dynamic blog posts data - loaded from manifest file
+let blogPosts = [];
+let currentFilter = null;
+
+// Function to load blog posts from manifest
+async function loadBlogPosts() {
+  try {
+    const response = await fetch('blog-manifest.json');
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    blogPosts = await response.json();
+    console.log(`Loaded ${blogPosts.length} blog posts from manifest`);
+    
+    // Initialize the page after loading posts
+    updateLastModified();
+    renderPosts();
+    generateArchives();
+    
+  } catch (error) {
+    console.error('Error loading blog posts:', error);
+    
+    // Fallback: show error message
+    document.getElementById('posts-container').innerHTML = `
+      <div class="error-message">
+        <h3>⚠ Failed to load blog posts</h3>
+        <p>Could not load blog posts from manifest file. This could happen if:</p>
+        <ul>
+          <li>The blog-manifest.json file doesn't exist</li>
+          <li>There are no blog posts yet</li>
+          <li>The file is not accessible</li>
+        </ul>
+        <p>To fix this:</p>
+        <ol>
+          <li>Run: <code>node generate-blog-manifest.js</code></li>
+          <li>Add some blog posts to the /blog directory</li>
+          <li>Refresh this page</li>
+        </ol>
+      </div>
+    `;
+    
+    document.getElementById('archives-container').innerHTML = '<p>No archives available.</p>';
+  }
+}
+
+function formatDate(dateString) {
+  const date = new Date(dateString);
+  return date.toLocaleDateString('en-US', { 
+    year: 'numeric', 
+    month: 'long', 
+    day: 'numeric' 
+  });
+}
+
+function createPostHTML(post) {
+  const tagsHTML = post.tags.map(tag => 
+    `<span class="tag" onclick="filterByTag('${tag}')">#${tag}</span>`
+  ).join(' ');
+  
+  return `
+    <article class="blog-post" data-tags="${post.tags.join(' ')}" data-date="${post.date}">
+      <header class="post-header">
+        <h3 class="post-title">
+          <a href="${post.file}" class="post-link">${post.title}</a>
+        </h3>
+        <div class="post-meta">
+          <span class="post-date">${formatDate(post.date)}</span>
+          <span class="post-separator">•</span>
+          <span class="post-read-time">${post.readTime}</span>
+        </div>
+      </header>
+      
+      <div class="post-content">
+        <p class="post-excerpt">${post.excerpt}</p>
+        
+        <div class="post-tags">
+          ${tagsHTML}
+        </div>
+        
+        <div class="post-actions">
+          <a href="${post.file}" class="read-more-btn">Read Full Article →</a>
+        </div>
+      </div>
+    </article>
+  `;
+}
+
+function generateArchives() {
+  if (blogPosts.length === 0) {
+    document.getElementById('archives-container').innerHTML = '<p>No archives available yet.</p>';
+    return;
+  }
+
+  const postsByYear = {};
+  const postsByTag = {};
+  
+  blogPosts.forEach(post => {
+    const year = new Date(post.date).getFullYear();
+    if (!postsByYear[year]) postsByYear[year] = [];
+    postsByYear[year].push(post);
+    
+    post.tags.forEach(tag => {
+      if (!postsByTag[tag]) postsByTag[tag] = [];
+      postsByTag[tag].push(post);
+    });
+  });
+  
+  let archivesHTML = '<h3>By Year</h3>\n<ul>\n';
+  Object.keys(postsByYear).sort((a, b) => b - a).forEach(year => {
+    archivesHTML += `<li><strong>${year}</strong> (${postsByYear[year].length} posts)</li>\n`;
+  });
+  archivesHTML += '</ul>\n\n<h3>By Tag</h3>\n<div class="tag-cloud">\n';
+  Object.keys(postsByTag).sort().forEach(tag => {
+    archivesHTML += `<span class="tag clickable" onclick="filterByTag('${tag}')">#${tag} (${postsByTag[tag].length})</span>\n`;
+  });
+  archivesHTML += '</div>';
+  
+  document.getElementById('archives-container').innerHTML = archivesHTML;
+}
+
+function renderPosts(posts = blogPosts) {
+  const container = document.getElementById('posts-container');
+  
+  if (posts.length === 0) {
+    if (blogPosts.length === 0) {
+      container.innerHTML = '<p>No blog posts found. Add some posts to the /blog directory and regenerate the manifest.</p>';
+    } else {
+      container.innerHTML = '<p>No posts found matching the current filter.</p>';
+    }
+    return;
+  }
+  
+  const postsHTML = posts
+    .sort((a, b) => new Date(b.date) - new Date(a.date))
+    .map(createPostHTML)
+    .join('\n');
+  
+  container.innerHTML = postsHTML;
+}
+
+function showAllPosts() {
+  currentFilter = null;
+  renderPosts();
+  document.getElementById('blog-posts').textContent = `Blog Posts (${blogPosts.length})`;
+}
+
+function filterByTag(tag) {
+  currentFilter = tag;
+  const filteredPosts = blogPosts.filter(post => post.tags.includes(tag));
+  renderPosts(filteredPosts);
+  document.getElementById('blog-posts').textContent = `Blog Posts: #${tag} (${filteredPosts.length})`;
+}
+
+function readPost(file) {
+  // Navigate to the actual blog post
+  window.location.href = file;
+}
+
+function updateLastModified() {
+  if (blogPosts.length === 0) {
+    document.getElementById('last-updated').textContent = 'No posts';
+    return;
+  }
+  
+  const lastModified = Math.max(...blogPosts.map(post => new Date(post.date)));
+  document.getElementById('last-updated').textContent = new Date(lastModified).toISOString().split('T')[0];
+}
+
+// Initialize the blog page
+document.addEventListener('DOMContentLoaded', function() {
+  // Load blog posts from manifest and initialize page
+  loadBlogPosts();
+  
+  // Add custom styling for the new blog design
+  const style = document.createElement('style');
+  style.textContent = `
+    /* Blog post styling */
+    .blog-post {
+      margin-bottom: calc(var(--line-height) * 3);
+      padding-bottom: calc(var(--line-height) * 2);
+      border-bottom: 1px solid var(--text-color-alt);
+    }
+    
+    .blog-post:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+    }
+    
+    .post-header {
+      margin-bottom: calc(var(--line-height) * 1);
+    }
+    
+    .post-title {
+      margin: 0 0 calc(var(--line-height) / 2) 0;
+      font-size: 1.2rem;
+      font-weight: var(--font-weight-bold);
+    }
+    
+    .post-link {
+      text-decoration: none;
+      color: var(--text-color);
+    }
+    
+    .post-link:hover {
+      text-decoration: underline;
+    }
+    
+    .post-meta {
+      font-size: 0.9rem;
+      color: var(--text-color-alt);
+      margin: 0;
+    }
+    
+    .post-separator {
+      margin: 0 0.5ch;
+    }
+    
+    .post-content {
+      margin-top: calc(var(--line-height) * 1);
+    }
+    
+    .post-excerpt {
+      margin: 0 0 calc(var(--line-height) * 1) 0;
+      line-height: calc(var(--line-height) * 1.2);
+    }
+    
+    .post-tags {
+      margin: calc(var(--line-height) * 0.5) 0;
+    }
+    
+    .tag {
+      display: inline-block;
+      padding: 0.2rem 0.5rem;
+      margin-right: 0.5ch;
+      margin-bottom: 0.25rem;
+      background-color: var(--background-color-alt);
+      border: 1px solid var(--text-color-alt);
+      font-size: 0.8rem;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    
+    .tag:hover, .tag.clickable:hover {
+      background-color: var(--text-color);
+      color: var(--background-color);
+    }
+    
+    .post-actions {
+      margin-top: calc(var(--line-height) * 1);
+    }
+    
+    .read-more-btn {
+      display: inline-block;
+      padding: 0.5rem 1rem;
+      background-color: var(--background-color-alt);
+      color: var(--background-color);
+      text-decoration: none;
+      font-weight: var(--font-weight-medium);
+      border: var(--border-thickness) solid var(--text-color);
+    }
+    
+    .read-more-btn:hover {
+      background-color: var(--text-color);
+      color: var(--background-color);
+    }
+    
+    .tag-cloud {
+      line-height: calc(var(--line-height) * 1.5);
+    }
+    
+    .tag-cloud .tag {
+      margin-right: 1ch;
+    }
+    
+    .error-message {
+      padding: calc(var(--line-height) * 2);
+      background-color: var(--background-color-alt);
+      border: var(--border-thickness) solid var(--text-color-alt);
+    }
+    
+    .error-message h3 {
+      margin-top: 0;
+      color: var(--text-color-alt);
+    }
+  `;
+  document.head.appendChild(style);
+});
+</script>
+
+<footer>
+<hr>
+<p>← <a href="index.html">Back to Main Site</a></p>
+<p>Source: <a href="https://github.com/M0N0Atomic/M0N0Atomic.github.io">github.com/monoatomix/monoatomix.github.io</a></p>
+</footer>
+</body>
+</html>

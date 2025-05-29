@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+  <meta charset="utf-8" />
+  <link rel="stylesheet" href="../index.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="Aniket Yadav" />
+  <meta name="blog-title" content="Building AI Agents: Lessons Learned" />
+  <meta name="blog-date" content="2024-12-15" />
+  <meta name="blog-tags" content="ai,python,agents" />
+  <meta name="blog-excerpt" content="My experience building AI agent frameworks and the challenges I encountered along the way." />
+  <meta name="blog-read-time" content="8 min read" />
+  <title>Building AI Agents: Lessons Learned - Aniket Yadav</title>
+</head>
+<body>
+<table class="header">
+  <tr>
+    <td colspan="2" rowspan="2" class="width-auto">
+      <h1 class="title"><a href="../index.html" style="text-decoration:none">Aniket Yadav</a></h1>
+      <span class="subtitle">Blog Post</span>
+    </td>
+    <th>Blog</th>
+    <td class="width-min"><a href="../blog.html">← Back to Blog</a></td>
+  </tr>
+  <tr>
+    <th>Date</th>
+    <td class="width-min"><time>December 15, 2024</time></td>
+  </tr>
+</table>
+
+<h1>Building AI Agents: Lessons Learned</h1>
+
+<p><em>Published on December 15, 2024 • 8 min read</em></p>
+
+<p>Tags: <button>#ai</button> <button>#python</button> <button>#agents</button></p>
+
+<h2>Introduction</h2>
+<p>Over the past year, I've been deeply involved in building AI agent frameworks at Taiyo. This journey has been filled with challenges, breakthroughs, and valuable lessons that I want to share with the community.</p>
+
+<h2>The Challenge</h2>
+<p>Building a generic framework for AI agents is not trivial. The main challenges we faced were:</p>
+<ul>
+<li>Making it LLM provider agnostic</li>
+<li>Ensuring consistent interface across different LLMs</li>
+<li>Allowing real-time updates to agent instructions</li>
+<li>Designing for modularity and extensibility</li>
+</ul>
+
+<h2>Our Approach</h2>
+<p>We decided to use Python with Pydantic for strong typing and OOP design principles. The framework was built with the following core concepts:</p>
+
+<pre><code>class Agent:
+    def __init__(self, instructions, llm_provider):
+        self.instructions = instructions
+        self.llm_provider = llm_provider
+    
+    def execute(self, task):
+        # Agent execution logic
+        pass
+</code></pre>
+
+<h2>Key Lessons</h2>
+<ol>
+<li><strong>Start Simple</strong>: Begin with a minimal viable agent and iterate</li>
+<li><strong>Provider Abstraction</strong>: Create a common interface for all LLM providers</li>
+<li><strong>Configuration Management</strong>: Make instructions and parameters easily configurable</li>
+<li><strong>Error Handling</strong>: Robust error handling is crucial for production systems</li>
+</ol>
+
+<h2>Conclusion</h2>
+<p>Building AI agents is an iterative process that requires careful architecture and continuous refinement. The framework we built has been successfully deployed for various tasks including risk analysis, report generation, and information retrieval.</p>
+
+<footer>
+<hr>
+<p>← <a href="../blog.html">Back to Blog</a> | <a href="../index.html">Home</a></p>
+</footer>
+</body>
+</html> 

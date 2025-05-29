@@ -1,0 +1,28 @@
+[
+  {
+    "title": "Building AI Agents: Lessons Learned",
+    "slug": "building-ai-agents",
+    "date": "2024-12-15",
+    "excerpt": "My experience building AI agent frameworks and the challenges I encountered along the way.",
+    "tags": [
+      "ai",
+      "python",
+      "agents"
+    ],
+    "readTime": "8 min read",
+    "file": "blog/building-ai-agents.html"
+  },
+  {
+    "title": "Data Engineering Best Practices in 2024",
+    "slug": "data-engineering-best-practices",
+    "date": "2024-12-10",
+    "excerpt": "A comprehensive guide to modern data engineering practices, tools, and methodologies.",
+    "tags": [
+      "data-engineering",
+      "python",
+      "elasticsearch"
+    ],
+    "readTime": "12 min read",
+    "file": "blog/data-engineering-best-practices.html"
+  }
+]

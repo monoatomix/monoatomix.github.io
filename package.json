@@ -1,0 +1,15 @@
+{
+  "name": "aniket-personal-website",
+  "version": "1.0.0",
+  "description": "Personal website with dynamic blog system",
+  "scripts": {
+    "build-blog": "node generate-blog-manifest.js",
+    "dev": "python -m http.server 8000",
+    "start": "python -m http.server 8000"
+  },
+  "author": "Aniket Yadav",
+  "license": "MIT",
+  "devDependencies": {
+    "jsdom": "^23.0.0"
+  }
+} 
